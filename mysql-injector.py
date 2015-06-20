@@ -23,6 +23,7 @@ is_int = "..."
 types = ""
 column_count = 0
 column_vulnerable = 0
+version = "1.1"
 
 def clear():
 	os.system('cls' if os.name == 'nt' else 'clear')
@@ -30,7 +31,7 @@ def clear():
 	print "        |  \/  |_  _/ __|/ _ \| |     |_ _|_ _  (_)___ __| |_ ___ _ _ "
 	print "        | |\/| | || \__ \ (_) | |__    | || ' \ | / -_) _|  _/ _ \ '_|"
 	print "        |_|  |_|\_, |___/\__\_\____|  |___|_|\_|| \___\__|\__\___/_|  "
-	print "                |___/                         \___/            v1.0 Beta"
+	print "                |___/                         \___/                v" + version
 	print
 
 proxy = 0
@@ -48,23 +49,21 @@ def hex(input):
 def md5(xstr):
 	return hashlib.md5(str(xstr)).hexdigest()
 
-def save(filename = "", table = ""):
-	clear()
+def save(table = ""):
+	path = os.path.expanduser('~') + "/Desktop/" + table + ".txt"
 	while 1:
-		if filename:
-			path = filename
-		else:
-			path = os.path.expanduser('~') + "/Desktop/" + table + ".txt"
+		print
 		try:
 			handler = open(path, "w")
 			for data in dump_array:
 				handler.write(data + "\n")
 			handler.close()
+			print prefix + "Dump saved to: " + path
+			print
 			return
 		except:
-			clear()
-			print prefix + "Unable to save, try other location."
-			filename = raw_input(prefix + "Enter path to save dump: ")
+			print prefix + "[-] Error while saving dump .. "
+			path = raw_input(prefix + "Enter other path to save dump: ")
 
 def debug(text,filename):
 	return
@@ -356,6 +355,7 @@ def get_databases():
 			print prefix + "[i] Gathering database names (" +  str(len(temp_array)) + "/" + str(count) + ")"
 		else:
 			print prefix + "[-] Could not get databases, exiting .. "
+			print
 			exit()
 		print
 		
@@ -430,6 +430,7 @@ def get_tables(database_id):
 			print prefix + "[i] Gathering table names (" +  str(len(temp_array)) + "/" + str(count) + ")"
 		else:
 			print prefix + "[-] Could not get tables, exiting .. "
+			print
 			exit()
 		print
 		
@@ -504,6 +505,7 @@ def get_columns(database_id):
 			print prefix + "[i] Gathering column names (" +  str(len(temp_array)) + "/" + str(count) + ")"
 		else:
 			print prefix + "[-] Could not get columns, exiting .. "
+			print
 			exit()
 		print
 		
@@ -602,6 +604,7 @@ def dump(column_names,table_name,database_name,database_id):
 		print prefix + "[i] Dumping row: " + str(len(dump_array)) + "/" + str(count)
 	else:
 		print prefix + "[-] Could not get rows, exiting .. "
+		print
 		exit()
 	print
 		
@@ -637,13 +640,9 @@ def dump(column_names,table_name,database_name,database_id):
 	clear()
 	for item in dump_array:
 		print prefix + item
-	print
-	path = raw_input(prefix + "Enter path to save dump: ")
-	if not path:
-		save("",table_name)
-	else:
-		save(path)
-	clear()
+
+	save(table_name)
+	raw_input(prefix + "Press enter to continue .. ")
 	del dump_array[:]
 	get_databases()
 	
@@ -659,7 +658,12 @@ def main():
 	is_int = check_int()
 	print prefix + "[i] Integer: " + str(is_int)
 	check_type()
-	get_info()
+	if types:
+		get_info()
+	else:
+		print prefix + "[-] Could not find vulnerabilities, exiting .. "
+		print
+		exit()
 	raw_input(prefix + "Press enter to get databases .. ")
 	get_databases()
 
