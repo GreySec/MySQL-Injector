@@ -15,7 +15,7 @@ database_list = {}
 table_list = {}
 column_list = {}
 
-syntax = ["you have an error in your sql syntax","check the manual that corresponds to you","warning: mysql_","supplied argument is not a valid mysql","to be resource, boolean given in"]
+syntax = ["You have an error in your SQL syntax","check the manual that corresponds to you","warning: mysql_","supplied argument is not a valid mysql","to be resource, boolean given in","Warning: mysql_fetch_array()","Error Query", "Error performing query:"]
 prefix = "  "
 original = "..."
 link = ""
